@@ -126,8 +126,6 @@ export type TOrderDone = Pick<IOrder, 'totalSum'>;
 - слой данных, отвечает за хранение и изменение данных
 - презентер, отвечает за связь представления и данных.
 
-![alt text](src\images\image.png)
-
 ### Слой коммуникации
 
 #### Класс AppApi
