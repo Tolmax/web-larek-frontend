@@ -76,6 +76,11 @@ export interface IOrder {
     totalSum: string | null;
     itemPrice: number;
     _idOrder: string;
+    setOrderInfo(order: IOrder): void;
+    checkValidationPMNT(data: Record<keyof TUserAddresInfo, string>): boolean;
+    checkValidationAddress(data: Record<keyof TUserAddresInfo, string>): boolean;
+    checkValidationEmail(data: Record<keyof TUserEmailInfo, string>): boolean;
+    checkValidationPhone(data: Record<keyof TUserPhoneInfo, string>): boolean;
 }
 
 ```
@@ -84,13 +89,9 @@ export interface IOrder {
 export interface IBasket {
     selectedGoods: [];
     selected: boolean;
-
     getBasketInfo(): TBoxOfChoosenGoods;
     deleteGood(selected: boolean, payload: Function | null): void;
-    updateBasket(basket: Ibasket, payload: Function | null = null): void;
-    setOrderInfo(order: Iorder): void;
-    checkValidationOne(data: Record<keyof TUserPaymentAddresInfo, string>): boolean;
-    checkValidationTwo(data: Record<keyof TUserEmailPhoneInfo, string>): boolean;
+    updateBasket(basket: IBasket, payload: Function | null = null): void;
 }
 ```
 
@@ -104,11 +105,14 @@ export type TBoxOfChoosenGoods = Pick<IGood, "title" | "price">;
 ```
 Модальное окно окно с первой формой оформления заказа с добавлением метода платежа, адреса доставки и кнопкой "ДАЛЕЕ"
 ```
-export type TUserPaymentAddresInfo = Pick<IBasket, "payment" | "address">;
+export type TUserEmailInfo = Pick<IOrder, "email">;
+export type TUserPhoneInfo = Pick<IOrder, "phone">;
 ```
+
 Модальное окно окно со второй формой оформления заказа с добавдением электронной почты, телефона и кнопкой "ОФОРМИТЬ"
 ```
-export type TUserEmailPhoneInfo = Pick<IBasket, "email" | "phone">;
+export type TUserEmailPhoneInfo = Pick<IOrder, "email">;
+export type TUserAddresInfo = Pick<IOrder, "address">;
 ```
 Модальное окно с уведомлением об успешной оплате и общей списанной суммой оплаты
 ```
@@ -144,7 +148,9 @@ export type TOrderDone = Pick<IOrder, 'totalSum'>;
 #### Класс GoodsData
 Класс отвечает за хранение и выбор товара покупателем.\
 Конструктор класса принимает инстант брокера событий\
+
 В полях класса хранятся следующие данные:
+
 - goods: IGood[]; - массив объектов товаров.
 - _preview: string | null - id карточки, выбранной для просмотра в модальной окне
 - events: IEvents - экземпляр класса `EventEmitter` для инициации событий при изменении данных.
@@ -155,35 +161,51 @@ export type TOrderDone = Pick<IOrder, 'totalSum'>;
 
 #### Класс BasketData
 
-Класс отвечает за хранение и логику работы с данными текущего покупателя.\
-Конструктор класса принимает инстант брокера событий\
+Класс отвечает за хранение и логику работы с данными корзины товаров. Данные корзины - это только список товаров, выбранных пользователем для покупки и кнопка "Оформить".\
+
+- constructor(selectedGoods: IGood[], events: IEvents) Конструктор принимает выбранный пользователем товар из массива товара и экземпляр класса `EventEmitter` для возможности инициации событий.
+
 В полях класса хранятся следующие данные:
 
 - selectedGoods: [] - массив объектов выбранных товаров
 - selected: boolean - информация (пометка) что данный товар добавлен в корзину
+- totalSum: string | null общая стоимость корзины товаров
+- events: IEvents - экземпляр класса `EventEmitter` для инициации событий при изменении данных.
+
+Так же класс предоставляет набор методов для взаимодействия с этими данными:
+
+- getBasketInfo(): TBoxOfChoosenGoods - возвращает основные данные корзины выбранных товаров отображаемые модальном окне
+- deleteGood(good: IGood, payload: Function | null): void - удаляет ранее выбранный товар из корзины. Если передан колбэк, то выполняет его после удаления, если нет, то вызывает событие изменения массива.
+- updateBasket(basket: IOrder, payload: Function | null = null): void - обновляет данные заказа в массиве корзины. Если передан колбэк, то выполняет его после обновления, если нет, то вызывает событие изменения массива.
+- gettotalSum(): number - получает общую стоимость выбранных товаров
+
+#### Класс OrderData
+
+Класс отвечает за хранение и логику работы с данными текущего покупателя.\
+Конструктор класса принимает инстант брокера событий\
+
+В полях класса хранятся следующие данные:
+
 - payment: string | null - выбранный способ оплаты товара online или при получении
 - email: string | null - данные об электронном адресе покупателя
 - phone: string | null - телефон покупателя
 - address: string | null - почтовый адрес покупателя
-- totalSum: string | null общая стоимость корзины товаров
-- events: IEvents - экземпляр класса `EventEmitter` для инициации событий при изменении данных.
 
-Так же класс предоставляет набор методов для взаимодействия с этими данными.
-- getBasketInfo(): TBoxOfChoosenGoods - возвращает основные данные корзины выбранных товаров отображаемые модальном окне
-- deleteGood(good: IGood, payload: Function | null): void - удаляет ранее выбранный товар из корзины. Если передан колбэк, то выполняет его после удаления, если нет, то вызывает событие изменения массива.
-- updateBasket(basket: IOrder, payload: Function | null = null): void - обновляет данные заказа в массиве корзины. Если передан колбэк, то выполняет его после обновления, если нет, то вызывает событие изменения массива.
+Так же класс предоставляет набор методов для взаимодействия с этими данными:
 - setOrderInfo(order: Iorder): void - принимает информацию о данных заказа
-- checkValidationOne(data: Record<keyof TUserPaymentAddresInfo, string>): boolean - проверяет объект с данными пользователя на валидность
-- checkValidationTwo(data: Record<keyof TUserEmailPhoneInfo, string>): boolean - проверяет объект с данными пользователя на валидность
-- gettotalSum(): number - получает общую стоимость выбранных товаров
+- checkValidationPMNT(data: Record<keyof TUserPaymentInfo, string>): boolean - проверяет что нажата кнопка с методом платежа
+- checkValidationAddress(data: Record<keyof TUserAddresstInfo, string>): boolean - проверяет объект с данными пользователя на валидность
+- checkValidationEmail(data: Record<keyof TUserEmailInfo, string>): boolean - проверяет объект с данными пользователя на валидность
+- checkValidationPhone(data: Record<keyof TUserPhoneInfo, string>): boolean - проверяет объект с данными пользователя на валидность
+
 
 ### Классы представления
 Все классы представления отвечают за отображение внутри контейнера (DOM-элемент) передаваемых в них данных.
 
 #### Класс ModalWindow
-В проекте сайта присутствуют 5 различных шаблонов модального окна. Форма каждого окна определена в шаблонах <tamplate> находящихся в файле index.html. Таким образом надо реализовать класс - универсальный контейнер, в конструктор которого будет передаваться готовая разметка модального окна которая получается при обращении к специальному классу соответствующего шаблона.\ А также класс будет содержать методы, необходимые для реализации модального окна. Два основных метода, которые используются во всех шаблонах `open` и `close` для управления отображением модального окна. Метод `open` устанавливает свойство display контейнера в значение block, что делает его видимым. Метод `close`, наоборот, устанавливает это свойство в none, скрывая окно. И метод, который устанавливает слушатели на клавиатуру, для закрытия модального окна по Esc, на клик в оверлей и кнопку-крестик для закрытия попапа. Также при закрытии окна должна быть реализована очистка попавшего туда контента.
+В проекте сайта присутствуют пять различных шаблонов контента модального окна, которые определены в шаблонах <tamplate> находящихся в файле index.html. Таким образом надо реализовать класс - универсальный контейнер, в конструктор которого будет передаваться готовый контент, полуенный при обращении к специальному классу слоя view, собирающему определенный контент по шаблону.\ А также этот универсальный класс будет содержать методы, необходимые для реализации модального окна: `open` и `close` для управления отображением модального окна. Метод `open` устанавливает свойство display контейнера в значение block, что делает его видимым. Метод `close`, наоборот, устанавливает это свойство в none, скрывая окно. И метод, который устанавливает слушатели для закрытия модального окна по нажатию на кнопку Esc, клику на оверлей и кнопку-крестик для закрытия попапа. Также при закрытии окна должна быть реализована очистка попавшего туда контента.
 
-- constructor(template: HTMLFormElement, events: IEvents) Конструктор принимает готовую разметку нужного модального окна и экземпляр класса `EventEmitter` для возможности инициации событий.
+- constructor(template: HTMLFormElement, events: IEvents) Конструктор принимает готовую разметку нужного контента и экземпляр класса `EventEmitter` для возможности инициации событий.
 
 Поля класса
 - template: HTMLFormElement - готовая разметка элемента модального окна
@@ -191,9 +213,9 @@ export type TOrderDone = Pick<IOrder, 'totalSum'>;
 
 Методы
 
-- open(newclass: string) - открывает модальное окно при нажатии на: карточку товара, конопку "КОРЗИНА", кнопку "ДАЛЕЕ", кнопку "ОПЛАТИТЬ"
-- close(newclass: string) - закрывает модальное окно
-- setAddEventListener(Listener: Function) - устанавливает слушатели для закрытия
+- open(idTamplate: string) - открывает модальное окно при нажатии на: карточку товара, конопку "КОРЗИНА", кнопку "ДАЛЕЕ", кнопку "ОПЛАТИТЬ"
+- close(idTamplate: string) - закрывает модальное окно
+- setAddEventListener(Listener: Function) - устанавливает слушатели для закрытия модального окна
 
 #### Класс ModalGoodConfirm
 Предназначен для реализации модального окна карточки товара. При инициализации (клике по карточке) находит по id нужный шаблон и по _preveiw получает данные карточки чтобы сформировать по шаблону HTMLTemplateElement готовый элемент разметки и передать его классу ModalWindow для открытия методом `open`\ Добавляет на кнопку обработчик клика\
@@ -290,7 +312,7 @@ export type TOrderDone = Pick<IOrder, 'totalSum'>;
 - setData(cardData: IGood): void - заполняет атрибуты элементов карточки данными
 - render(): HTMLElement - метод возвращает полностью заполненную карточку с установленными слушателями
 
-#### Класс renderPage
+#### Класс RenderPage
 Класс, описывающий главную страницу. Отвечает за загрузку сайта в том числе отображение массива с карточками товаров на главной странице, счетчика товара и кнопки открытия корзины товара.\
 За взаимодействие с сервером (получения массива карточек) отвечает метод GET класса AppApi.\
 В конструктор принимает контейнер, в котором размещаются HTML элементы и экземпляр класса `EventEmitter` для возможности инициации событий. constructor(container: HTMLElement, counter: HTMLElement, clickButton: HTMLButtonElement, protected events: IEvents);\
@@ -303,7 +325,6 @@ export type TOrderDone = Pick<IOrder, 'totalSum'>;
 
 Методы
 
-- replaceChildren(elements: HTMLElement[]) - принимает массив, состоящий из HTML-элементов карточек, который нужно отобразить на странице
 - set container(container: HTMLElement[]) - для хранения информации о карточках товара на странице]
 - set counter(value: number)- сеттер для счётчика товаров в корзине
 - set locked(value: boolean) - сеттер для блока прокрутки

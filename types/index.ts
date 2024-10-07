@@ -21,6 +21,11 @@ export interface IOrder {
     phone: string | null;
     address: string | null;
     totalSum: string | null;
+    setOrderInfo(order: IOrder): void;
+    checkValidationPMNT(data: Record<keyof TUserAddresInfo, string>): boolean;
+    checkValidationAddress(data: Record<keyof TUserAddresInfo, string>): boolean;
+    checkValidationEmail(data: Record<keyof TUserEmailInfo, string>): boolean;
+    checkValidationPhone(data: Record<keyof TUserPhoneInfo, string>): boolean;
 }
 
 export interface IBasket {
@@ -30,15 +35,19 @@ export interface IBasket {
     getBasketInfo(): TBoxOfChoosenGoods;
     deleteGood(selected: boolean, payload: Function | null): void;
     updateBasket(basket: IBasket, payload: Function | null): void;
-    setOrderInfo(order: IOrder): void;
-    checkValidation(data: Record<keyof TUserPublicInfo, string>): boolean;
 }
 
 export type TAddGoodToBox = Pick<IGood, "description" | "image" | "title" | "category" | "price">;
 
 export type TBoxOfChoosenGoods = Pick<IGood, "title" | "price">;
 
-export type TUserPublicInfo = Pick<IOrder, "payment" | "address" | "email" | "phone">;
+export type TUserEmailInfo = Pick<IOrder, "email">;
+
+export type TUserPhoneInfo = Pick<IOrder, "phone">;
+
+export type TUserPaymentInfo = Pick<IOrder, "payment">;
+
+export type TUserAddresInfo = Pick<IOrder, "address">;
 
 export type TOrderDone = Pick<IOrder, 'totalSum'>;
 
