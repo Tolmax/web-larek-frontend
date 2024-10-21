@@ -133,3 +133,15 @@ export function createElement<
     }
     return element;
 }
+
+export const getCategoryClass = (category: string): string | null => {
+    const categoryObj: Record<string, string> = {
+        'дополнительное': 'additional',
+        "софт-скил": 'soft',
+        "хард-скил": 'hard',
+        "другое": 'other',
+        "кнопка": 'button'
+    };
+
+    return categoryObj[category] || null;
+}

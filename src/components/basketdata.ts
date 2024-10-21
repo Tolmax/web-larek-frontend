@@ -1,13 +1,13 @@
-import { IBasket, IGood } from "../types";
-import { IEvents } from "./base/events";
+import { IProduct } from "../types";
+import { EventEmitter, IEvents } from "./base/events";
 
-export class BasketData implements IBasket {
+export class BasketData {
     
     protected _selectedGoods: [];
     protected _selected: boolean;
-    protected events: IEvents;
+    protected events: EventEmitter;
 
-    constructor(events: IEvents) {
+    constructor(events: EventEmitter) {
         this.events = events;
     }
 

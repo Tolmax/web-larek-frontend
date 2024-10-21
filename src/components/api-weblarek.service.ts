@@ -1,6 +1,6 @@
 import { API_URL } from '../utils/constants';
 import { Api } from './base/api';
-import { IApiResponseCreateOrder, IApiResponseGetProductList, IGood, IOrder } from '../types'
+import { IApiResponseCreateOrder, IApiResponseGetProductList, IOrder, IProduct } from '../types'
 
 export class ApiWeblarekService extends Api {
     constructor() {
@@ -11,8 +11,8 @@ export class ApiWeblarekService extends Api {
         return this.get<IApiResponseGetProductList>(`product`);
     }
 
-    public getProduct(id: string): Promise<IGood> {
-        return this.get<IGood>(`product/${id}`);
+    public getProduct(id: string): Promise<IProduct> {
+        return this.get<IProduct>(`product/${id}`);
     }
 
     public sendOrder(order: IOrder): Promise<IApiResponseCreateOrder> {

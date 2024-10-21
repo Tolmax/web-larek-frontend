@@ -7,6 +7,15 @@ export interface IProduct {
     price: number | null;
 }
 
+export interface CardElementFactoryNodes {
+    card: HTMLButtonElement;
+    cardCategory: HTMLElement;
+    cardTitle: HTMLElement;
+    cardImage: HTMLImageElement;
+    cardPrice: HTMLElement;
+    cardDescription: HTMLElement;
+}
+
 // export interface ITotalgoods {
 //     goods: IGood[];
 //     preview: string | null;
@@ -48,20 +57,20 @@ export interface IApiResponseCreateOrder {
 
 export interface IApiResponseGetProductList {
     total: number;
-    items: IGood[];
+    items: IProduct[];
 }
 
-export type TAddGoodToBox = Pick<IGood, "description" | "image" | "title" | "category" | "price">;
+// export type TAddGoodToBox = Pick<IProduct, "description" | "image" | "title" | "category" | "price">;
 
-export type TBoxOfChoosenGoods = Pick<IGood, "title" | "price">;
+// export type TBoxOfChoosenGoods = Pick<IProduct, "title" | "price">;
 
-export type TUserEmailInfo = Pick<IOrder, "email">;
+// export type TUserEmailInfo = Pick<IOrder, "email">;
 
-export type TUserPhoneInfo = Pick<IOrder, "phone">;
+// export type TUserPhoneInfo = Pick<IOrder, "phone">;
 
-export type TUserPaymentInfo = Pick<IOrder, "payment">;
+// export type TUserPaymentInfo = Pick<IOrder, "payment">;
 
-export type TUserAddresInfo = Pick<IOrder, "address">;
+// export type TUserAddresInfo = Pick<IOrder, "address">;
 
 // export type TOrderDone = Pick<IOrder, 'totalSum'>;
 
