@@ -7,13 +7,29 @@ export interface IProduct {
     price: number | null;
 }
 
-export interface CardElementFactoryNodes {
+export interface CardMiniNodes {
     card: HTMLButtonElement;
     cardCategory: HTMLElement;
     cardTitle: HTMLElement;
     cardImage: HTMLImageElement;
     cardPrice: HTMLElement;
     cardDescription: HTMLElement;
+}
+
+export interface ModalProductNodes {
+    modalProduct: HTMLElement;
+    modalProductImage: HTMLImageElement;
+    modalProductCategory: HTMLElement;
+    modalProductTitle: HTMLElement;
+    modalProductDescription: HTMLElement;
+    modalProductButton: HTMLButtonElement;
+    modalProductPrice: HTMLElement;
+}
+
+export interface ModalNodes {
+    modal: HTMLElement;
+    modalClose: HTMLButtonElement;
+    modalContent: HTMLElement;
 }
 
 // export interface ITotalgoods {
@@ -40,7 +56,7 @@ export interface IOrder {
 }
 
 export interface IBasket {
-    selectedGoods: []; 
+    selectedProducts: []; 
     selected: boolean;
 
 

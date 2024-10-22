@@ -145,3 +145,7 @@ export const getCategoryClass = (category: string): string | null => {
 
     return categoryObj[category] || null;
 }
+
+export const getCardPriceText = (price: number | null) => {
+    return price === null ? 'Бесценно' : `${price} синапсов`;
+};

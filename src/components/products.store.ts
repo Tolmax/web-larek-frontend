@@ -18,7 +18,7 @@ export class ProductsStore {
         return this._products;
     }
 
-    public getOne(_id: string): IProduct | undefined {
+    public getOne = (_id: string): IProduct | undefined => {
         return this._products.find(product => product.id === _id);
-    }
+    };
 }

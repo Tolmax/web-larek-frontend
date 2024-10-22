@@ -1,12 +1,13 @@
+import { cloneTemplate } from "../utils/utils";
 import { EventEmitter } from "./base/events";
 
 export class Component<T = object> {
-    protected _templateSelector: string;
     protected _events: EventEmitter;
+    protected _container: HTMLElement;
 
     constructor(events: EventEmitter, templateSelector: string) {
         this._events = events;
-        this._templateSelector = templateSelector;
+        this._container = cloneTemplate(templateSelector);
     }
 
     /**
