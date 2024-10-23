@@ -1,3 +1,5 @@
+import { BasketStore } from "../components/basket.store";
+
 export function pascalToKebab(value: string): string {
     return value.replace(/([a-z0–9])([A-Z])/g, "$1-$2").toLowerCase();
 }
@@ -149,3 +151,7 @@ export const getCategoryClass = (category: string): string | null => {
 export const getCardPriceText = (price: number | null) => {
     return price === null ? 'Бесценно' : `${price} синапсов`;
 };
+
+// export const getNamperProductsInBasket = () => {
+//     return BasketStore.length                                       //проверить правильность
+// }

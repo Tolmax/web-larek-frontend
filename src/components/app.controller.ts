@@ -1,12 +1,12 @@
 import { EventEmitter } from '../components/base/events';
 import { ApiWeblarekService } from './api-weblarek.service';
-// import { CardsRenderer } from './card-element-factory';
-// import { dataCards } from '../utils/data';
 import { ProductsStore } from './products.store';
 import { CardMini } from './card-mini';
 import { IProduct } from '../types';
 import { ModalProduct } from './modal-product';
 import { BasketStore } from './basket.store';
+import { ModalBasket } from './modal-basket';
+import { BasketItemComponent } from './basket-item.component';
 
 export class AppController {
 
@@ -16,6 +16,9 @@ export class AppController {
     private _productsStore: ProductsStore;
     private _modalProduct: ModalProduct;
     private _basketStore: BasketStore;
+    private _modalBasket: ModalBasket;
+    private _basketItemComponent: BasketItemComponent;
+
     // private _cardsRenderer: CardsRenderer;
 
     constructor() {
@@ -24,6 +27,8 @@ export class AppController {
         this._productsStore = new ProductsStore(this._events);
         this._modalProduct = new ModalProduct(this._events, '#card-preview');
         this._basketStore = new BasketStore(this._events, this._productsStore);
+        this._basketItemComponent = new BasketItemComponent(this._events, '#card-basket');
+        this._modalBasket = new ModalBasket(this._events, '#basket', this._basketStore, this._basketItemComponent);
         // this._card = new Cards(cardTemplate, this._events)
     }
 
@@ -54,24 +59,28 @@ export class AppController {
             this._modalProduct.open(product);
         });
 
-        this._events.on<{ productId: string }>('product:add', ({ productId }) => {
+        this._events.on<{ productId: string }>('basket:delete', ({ productId }) => {                          
+            this._basketStore.delete(productId);
+        });
+
+        this._events.on<{ productId: string }>('basket:add', ({ productId }) => {
             // console.log('Кликнули по кнопке в корзину', productId);
             this._basketStore.add(productId);
-
-            console.clear();
-            console.log(this._basketStore.calcSum());
-            console.log(this._basketStore.getAll());
             
         });
 
         const headerBasketCounterNode = document.querySelector('.header__basket-counter');
+        const headerBasketNode = document.querySelector('.header__basket');
 
         this._events.on<IProduct[]>('basket:changed', products => {
-            console.log('Изменилась корзина');
-            console.log(products);
-
+            // console.log('изменилась корзина');
             headerBasketCounterNode.textContent = `${products.length}`;
         });
+
+        // вешаем слушатель на кнопку корзины
+        headerBasketNode.addEventListener('click', () => {
+            this._modalBasket.open();
+        })
 
         
     }

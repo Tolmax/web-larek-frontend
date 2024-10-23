@@ -1,6 +1,6 @@
 
 import { ModalNodes } from '../../../types';
-import { Component } from '../../component';
+import { Component } from './component';
 import { EventEmitter } from '../events';
 
 export class Modal {

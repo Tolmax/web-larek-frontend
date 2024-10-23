@@ -51,7 +51,7 @@ export class ModalProduct extends Modal {
         this._nodes.modalProductTitle.textContent = product.title;
 
         this._nodes.modalProductButton.addEventListener('click', () => {
-            this._events.emit('product:add', { productId: product.id });
+            this._events.emit('basket:add', { productId: product.id });
             this._close();
         });
 

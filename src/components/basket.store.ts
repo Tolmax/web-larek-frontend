@@ -17,7 +17,7 @@ export class BasketStore {
         this._events.emit('basket:changed', this.getAll());
     }
 
-    public remove(productId: string) {
+    public delete(productId: string) {
         this._basket.delete(productId);
         this._events.emit('basket:changed', this.getAll());
     }

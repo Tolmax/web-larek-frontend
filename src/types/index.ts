@@ -26,6 +26,12 @@ export interface ModalProductNodes {
     modalProductPrice: HTMLElement;
 }
 
+export interface ModalBasketNodes {
+    modalBasket: HTMLElement;
+    modalBasketSubmit: HTMLButtonElement;
+    modalBasketPrice: HTMLElement;
+}
+
 export interface ModalNodes {
     modal: HTMLElement;
     modalClose: HTMLButtonElement;
@@ -38,11 +44,11 @@ export interface ModalNodes {
     
 //     getGood(_id: string): IGood;
 // }
-
+export type TOrderPayment = 'online' | 'offline';
 
 
 export interface IOrder {
-    payment: string;
+    payment: TOrderPayment;
     email: string;
     phone: string;
     address: string;
@@ -55,16 +61,16 @@ export interface IOrder {
     // checkValidationPhone(data: Record<keyof TUserPhoneInfo, string>): boolean;
 }
 
-export interface IBasket {
-    selectedProducts: []; 
-    selected: boolean;
+// export interface IBasket {
+//     selectedProducts: []; 
+    // selected: boolean;
 
 
     // addGoodToBasket():
     // getBasketInfo(): TBoxOfChoosenGoods;
     // deleteGood(selected: boolean, payload: Function | null): void;
     // updateBasket(basket: IBasket, payload: Function | null): void;
-}
+// }
 
 export interface IApiResponseCreateOrder {
     id: string;
