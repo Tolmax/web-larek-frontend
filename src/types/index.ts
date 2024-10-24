@@ -57,8 +57,13 @@ export interface ModalContactsNodes {
     modalContactsSubmitButton: HTMLButtonElement;
 }
 
-export type TOrderPayment = 'online' | 'offline';
+export interface ModalSuccessNodes {
+    modalSuccess: HTMLElement;
+    modalSuccessDescription: HTMLElement;
+    modalSuccessCloseButton: HTMLButtonElement;
+}
 
+export type TOrderPayment = 'online' | 'offline';
 
 export interface IOrder {
     payment: TOrderPayment;
@@ -67,23 +72,7 @@ export interface IOrder {
     address: string;
     total: number;
     items: string[];
-    // setOrderInfo(order: IOrder): void;
-    // checkValidationPMNT(data: Record<keyof TUserAddresInfo, string>): boolean;
-    // checkValidationAddress(data: Record<keyof TUserAddresInfo, string>): boolean;
-    // checkValidationEmail(data: Record<keyof TUserEmailInfo, string>): boolean;
-    // checkValidationPhone(data: Record<keyof TUserPhoneInfo, string>): boolean;
 }
-
-// export interface IBasket {
-//     selectedProducts: []; 
-    // selected: boolean;
-
-
-    // addGoodToBasket():
-    // getBasketInfo(): TBoxOfChoosenGoods;
-    // deleteGood(selected: boolean, payload: Function | null): void;
-    // updateBasket(basket: IBasket, payload: Function | null): void;
-// }
 
 export interface IApiResponseCreateOrder {
     id: string;
@@ -94,21 +83,3 @@ export interface IApiResponseGetProductList {
     total: number;
     items: IProduct[];
 }
-
-// export type TAddGoodToBox = Pick<IProduct, "description" | "image" | "title" | "category" | "price">;
-
-// export type TBoxOfChoosenGoods = Pick<IProduct, "title" | "price">;
-
-// export type TUserEmailInfo = Pick<IOrder, "email">;
-
-// export type TUserPhoneInfo = Pick<IOrder, "phone">;
-
-// export type TUserPaymentInfo = Pick<IOrder, "payment">;
-
-// export type TUserAddresInfo = Pick<IOrder, "address">;
-
-// export type TOrderDone = Pick<IOrder, 'totalSum'>;
-
-
-    // openGoodCard(_preview: string): IGood;
-    // closeGoodCard(_preview: string): IGood;

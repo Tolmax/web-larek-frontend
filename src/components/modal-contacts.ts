@@ -43,8 +43,6 @@ export class ModalContacts extends Modal {
 			modalContactsSubmitButton: modalContacts.querySelector('[type=submit]'),
 		};
 
-
-
 		this._nodes.modalContactsEmailInput.addEventListener('input', () => this._validate());
 		this._nodes.modalContactsPhoneInput.addEventListener('input', () => this._validate());
 
@@ -53,8 +51,9 @@ export class ModalContacts extends Modal {
 			this._orderStore.setEmail(this._nodes.modalContactsEmailInput.value);
 			this._orderStore.setPhone(this._nodes.modalContactsPhoneInput.value);
             this._apiWeblarekService.sendOrder(this._orderStore.getOrder())
-                .then((res) => {
-                    this._events.emit('contacts:submit', res);
+                .then((order) => {
+                    this._events.emit('contacts:submit', order);
+					console.log(order);					
                 })
                 .catch(() => {
                     alert('Произошла ошибка при отправке заказа');
@@ -63,22 +62,6 @@ export class ModalContacts extends Modal {
 
 		return this._nodes.modalContacts;
 	}
-
-
-	//private _setPayment(payment: TOrderPayment): void {
-	//	this._paymentMethod = payment;
-
-	//	if (payment === 'online') {
-	//		this._nodes.modalOrderCardButton.classList.add('button_alt-active');
-	//		this._nodes.modalOrderCashButton.classList.remove('button_alt-active');
-	//	}
-	//	if (payment === 'offline') {
-	//		this._nodes.modalOrderCardButton.classList.remove('button_alt-active');
-	//		this._nodes.modalOrderCashButton.classList.add('button_alt-active');
-	//	}
-
-	//	this._validate();
-	//}
 
 	private _validate(): void {
 		const valid =

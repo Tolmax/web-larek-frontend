@@ -10,6 +10,7 @@ import { BasketItemComponent } from './basket-item.component';
 import { ModalOrder } from './modal-order';
 import { OrderStore } from './order.store';
 import { ModalContacts } from './modal-contacts';
+import { ModalSucess } from './modal-success';
 
 export class AppController {
     private _inited: boolean = false;
@@ -22,13 +23,14 @@ export class AppController {
     private _basketItemComponent: BasketItemComponent;
     private _orderStore: OrderStore;
     private _modalOrder: ModalOrder;
-    private _modalContacts: ModalContacts
+    private _modalContacts: ModalContacts;
+    private _modalSuccess: ModalSucess;
 
-    // private _cardsRenderer: CardsRenderer;
 
     constructor() {
         this._events = new EventEmitter();
         this._apiWeblarekService = new ApiWeblarekService();
+        // this._apiResponseCreateOrder = new ModalContacts;
         this._productsStore = new ProductsStore(this._events);
         this._modalProduct = new ModalProduct(this._events, '#card-preview');
         this._basketStore = new BasketStore(this._events, this._productsStore);
@@ -37,7 +39,7 @@ export class AppController {
         this._modalBasket = new ModalBasket(this._events, '#basket', this._basketStore, this._basketItemComponent);
         this._modalOrder = new ModalOrder(this._events, '#order', this._orderStore);
         this._modalContacts = new ModalContacts(this._events, '#contacts', this._orderStore, this._apiWeblarekService);
-        // this._card = new Cards(cardTemplate, this._events)
+        this._modalSuccess = new ModalSucess(this._events, '#success');
     }
 
     public init(): void {
@@ -46,9 +48,6 @@ export class AppController {
 
         this._listenEvents();
         this._loadProducts();
-
-        // this._card.setData(dataCards[0]);
-        // testCard.append(this._card.render())
     }
 
     private _loadProducts(): void {
@@ -85,11 +84,10 @@ export class AppController {
             this._modalContacts.open();
         });
 
-        this._events.on<IApiResponseCreateOrder>('contacts:submit', (res) => {
-            console.log(this._orderStore);
-            
-            
-            // this._modalSucess.open(res);
+        this._events.on<IApiResponseCreateOrder>('contacts:submit', (order) => { 
+            console.log(order);
+                    
+            this._modalSuccess.open(order);
         });
 
         const headerBasketCounterNode = document.querySelector('.header__basket-counter');
