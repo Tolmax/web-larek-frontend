@@ -38,12 +38,25 @@ export interface ModalNodes {
     modalContent: HTMLElement;
 }
 
-// export interface ITotalgoods {
-//     goods: IGood[];
-//     preview: string | null;
-    
-//     getGood(_id: string): IGood;
-// }
+export interface ModalOrderNodes {
+    modalOrder: HTMLElement;
+    modalOrderForm: HTMLFormElement;
+    modalOrderErrors: HTMLSpanElement;
+    modalOrderCashButton: HTMLButtonElement;
+    modalOrderCardButton: HTMLButtonElement;
+    modalOrderInput: HTMLInputElement;
+    modalOrderSubmitButton: HTMLButtonElement;
+}
+
+export interface ModalContactsNodes {
+    modalContacts: HTMLElement;
+    modalContactsForm: HTMLFormElement;
+    modalContactsErrors: HTMLSpanElement;
+    modalContactsEmailInput: HTMLInputElement;
+    modalContactsPhoneInput: HTMLInputElement;
+    modalContactsSubmitButton: HTMLButtonElement;
+}
+
 export type TOrderPayment = 'online' | 'offline';
 
 

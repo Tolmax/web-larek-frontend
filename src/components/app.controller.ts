@@ -2,14 +2,16 @@ import { EventEmitter } from '../components/base/events';
 import { ApiWeblarekService } from './api-weblarek.service';
 import { ProductsStore } from './products.store';
 import { CardMini } from './card-mini';
-import { IProduct } from '../types';
+import { IApiResponseCreateOrder, IProduct } from '../types';
 import { ModalProduct } from './modal-product';
 import { BasketStore } from './basket.store';
 import { ModalBasket } from './modal-basket';
 import { BasketItemComponent } from './basket-item.component';
+import { ModalOrder } from './modal-order';
+import { OrderStore } from './order.store';
+import { ModalContacts } from './modal-contacts';
 
 export class AppController {
-
     private _inited: boolean = false;
     private _events: EventEmitter;
     private _apiWeblarekService: ApiWeblarekService;
@@ -18,6 +20,9 @@ export class AppController {
     private _basketStore: BasketStore;
     private _modalBasket: ModalBasket;
     private _basketItemComponent: BasketItemComponent;
+    private _orderStore: OrderStore;
+    private _modalOrder: ModalOrder;
+    private _modalContacts: ModalContacts
 
     // private _cardsRenderer: CardsRenderer;
 
@@ -27,8 +32,11 @@ export class AppController {
         this._productsStore = new ProductsStore(this._events);
         this._modalProduct = new ModalProduct(this._events, '#card-preview');
         this._basketStore = new BasketStore(this._events, this._productsStore);
+        this._orderStore = new OrderStore(this._basketStore);
         this._basketItemComponent = new BasketItemComponent(this._events, '#card-basket');
         this._modalBasket = new ModalBasket(this._events, '#basket', this._basketStore, this._basketItemComponent);
+        this._modalOrder = new ModalOrder(this._events, '#order', this._orderStore);
+        this._modalContacts = new ModalContacts(this._events, '#contacts', this._orderStore, this._apiWeblarekService);
         // this._card = new Cards(cardTemplate, this._events)
     }
 
@@ -64,9 +72,24 @@ export class AppController {
         });
 
         this._events.on<{ productId: string }>('basket:add', ({ productId }) => {
-            // console.log('Кликнули по кнопке в корзину', productId);
+            console.log('Кликнули по кнопке в корзину', productId);
             this._basketStore.add(productId);
+        });
+
+        this._events.on('basket:submit', () => {
+            console.log('Кликнули по кнопке корзины - Оформить')
+            this._modalOrder.open();
+        });
+
+        this._events.on('order:submit', () => {
+            this._modalContacts.open();
+        });
+
+        this._events.on<IApiResponseCreateOrder>('contacts:submit', (res) => {
+            console.log(this._orderStore);
             
+            
+            // this._modalSucess.open(res);
         });
 
         const headerBasketCounterNode = document.querySelector('.header__basket-counter');
@@ -81,7 +104,7 @@ export class AppController {
         headerBasketNode.addEventListener('click', () => {
             this._modalBasket.open();
         })
-
+        
         
     }
 

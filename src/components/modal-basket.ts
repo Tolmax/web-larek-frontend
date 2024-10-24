@@ -50,7 +50,6 @@ export class ModalBasket extends Modal {
 
 		this._nodes.modalBasketSubmit.addEventListener('click', () => {
 			this._events.emit('basket:submit');
-			// this._close();
 		});
 
 		this._calcBasketInfo();
