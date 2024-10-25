@@ -34,9 +34,6 @@ export class ModalProduct extends Modal {
             modalProductPrice: modalProduct.querySelector(".card__price")
         };
 
-        // const basketItems = this._basketStore.getAll();
-        // btnSubmit.disabled = basketItems.length === 0;
-
         const category = getCategoryClass(product.category);
 		
 		this._nodes.modalProductCategory.classList.remove('card__category_soft');

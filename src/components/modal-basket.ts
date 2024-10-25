@@ -66,10 +66,5 @@ export class ModalBasket extends Modal {
 		this._nodes.modalBasketPrice.textContent = `${this._basketStore.calcSum()} синапсов`;
 		this._nodes.modalBasketSubmit.disabled = this._basketStore.size === 0;
 	};
-
-	// set valid(isValid: boolean) {
-	// 	this.modalBasketSubmit.classList.toggle('modal__button_disabled', !isValid);
-	// 	this.modalBasketSubmit.disabled = !isValid;
-	// }
 }
 

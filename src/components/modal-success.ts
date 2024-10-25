@@ -4,7 +4,7 @@ import { Modal } from "./base/common/modal";
 import { EventEmitter } from "./base/events";
 
 
-export class ModalSucess extends Modal {
+export class ModalSucсess extends Modal {
 	private _templateSelector: string;
 	private _events: EventEmitter;
 	private _nodes: ModalSuccessNodes;

@@ -1,7 +1,7 @@
 // import { dataCards } from "./data";
 
 import { EventEmitter } from './base/events';
-import { cloneTemplate, getCardPriceText } from '../utils/utils';
+import { getCardPriceText } from '../utils/utils';
 import { CardMiniNodes, IProduct } from '../types';
 import { Component } from './base/common/component';
 import { CDN_URL } from '../utils/constants';

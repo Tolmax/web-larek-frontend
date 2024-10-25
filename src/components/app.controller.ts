@@ -10,7 +10,7 @@ import { BasketItemComponent } from './basket-item.component';
 import { ModalOrder } from './modal-order';
 import { OrderStore } from './order.store';
 import { ModalContacts } from './modal-contacts';
-import { ModalSucess } from './modal-success';
+import { ModalSucсess } from './modal-success';
 
 export class AppController {
     private _inited: boolean = false;
@@ -24,7 +24,7 @@ export class AppController {
     private _orderStore: OrderStore;
     private _modalOrder: ModalOrder;
     private _modalContacts: ModalContacts;
-    private _modalSuccess: ModalSucess;
+    private _modalSuccess: ModalSucсess;
 
 
     constructor() {
@@ -39,7 +39,7 @@ export class AppController {
         this._modalBasket = new ModalBasket(this._events, '#basket', this._basketStore, this._basketItemComponent);
         this._modalOrder = new ModalOrder(this._events, '#order', this._orderStore);
         this._modalContacts = new ModalContacts(this._events, '#contacts', this._orderStore, this._apiWeblarekService);
-        this._modalSuccess = new ModalSucess(this._events, '#success');
+        this._modalSuccess = new ModalSucсess(this._events, '#success');
     }
 
     public init(): void {
@@ -66,17 +66,18 @@ export class AppController {
             this._modalProduct.open(product);
         });
 
-        this._events.on<{ productId: string }>('basket:delete', ({ productId }) => {                          
+        this._events.on<{ productId: string }>('basket:delete', ({ productId }) => { 
+            // console.log('Кликнули по карточке удаления товара из корзины', productId);            
             this._basketStore.delete(productId);
         });
 
         this._events.on<{ productId: string }>('basket:add', ({ productId }) => {
-            console.log('Кликнули по кнопке в корзину', productId);
+            // console.log('Кликнули по кнопке в корзину', productId);
             this._basketStore.add(productId);
         });
 
         this._events.on('basket:submit', () => {
-            console.log('Кликнули по кнопке корзины - Оформить')
+            // console.log('Кликнули по кнопке корзины - Оформить')
             this._modalOrder.open();
         });
 
@@ -85,8 +86,7 @@ export class AppController {
         });
 
         this._events.on<IApiResponseCreateOrder>('contacts:submit', (order) => { 
-            console.log(order);
-                    
+            // console.log(order);  
             this._modalSuccess.open(order);
         });
 

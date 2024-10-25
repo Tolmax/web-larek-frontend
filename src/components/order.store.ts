@@ -6,7 +6,6 @@ export class OrderStore {
     private _address: string | null = null;
     private _email: string | null = null;
     private _phone: string | null = null;
-    // private _items: string[] = [];
     private _basketStore: BasketStore;
 
     constructor(basketStore: BasketStore) {
@@ -28,10 +27,6 @@ export class OrderStore {
     public setPhone(phone: string): void {
         this._phone = phone;
     }
-
-    // public setProductIds(items: string[]): void {
-    //     this._items = items;
-    // }
 
     public clear(): void {
         this._payment = null;

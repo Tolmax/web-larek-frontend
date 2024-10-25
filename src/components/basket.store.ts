@@ -38,7 +38,6 @@ export class BasketStore {
         return this.getAll().reduce((acc, curr) => {
             const price = curr.price === null ? 0 : curr.price;
             acc = acc + price;
-
             return acc;
         }, 0);
     }

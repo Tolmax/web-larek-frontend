@@ -7,6 +7,21 @@ export interface IProduct {
     price: number | null;
 }
 
+export interface IOrder {
+    payment: TOrderPayment;
+    email: string;
+    phone: string;
+    address: string;
+    total: number;
+    items: string[];
+}
+
+export interface ModalNodes {
+    modal: HTMLElement;
+    modalClose: HTMLButtonElement;
+    modalContent: HTMLElement;
+}
+
 export interface CardMiniNodes {
     card: HTMLButtonElement;
     cardCategory: HTMLElement;
@@ -30,12 +45,6 @@ export interface ModalBasketNodes {
     modalBasket: HTMLElement;
     modalBasketSubmit: HTMLButtonElement;
     modalBasketPrice: HTMLElement;
-}
-
-export interface ModalNodes {
-    modal: HTMLElement;
-    modalClose: HTMLButtonElement;
-    modalContent: HTMLElement;
 }
 
 export interface ModalOrderNodes {
@@ -64,15 +73,6 @@ export interface ModalSuccessNodes {
 }
 
 export type TOrderPayment = 'online' | 'offline';
-
-export interface IOrder {
-    payment: TOrderPayment;
-    email: string;
-    phone: string;
-    address: string;
-    total: number;
-    items: string[];
-}
 
 export interface IApiResponseCreateOrder {
     id: string;
