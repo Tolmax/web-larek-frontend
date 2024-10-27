@@ -47,6 +47,11 @@ export interface ModalBasketNodes {
     modalBasketPrice: HTMLElement;
 }
 
+export interface IBasketItemSpecialNode {
+    node: HTMLElement;
+    reRenderIndex: (i: number) => void;
+}
+
 export interface ModalOrderNodes {
     modalOrder: HTMLElement;
     modalOrderForm: HTMLFormElement;

@@ -30,7 +30,6 @@ export class AppController {
     constructor() {
         this._events = new EventEmitter();
         this._apiWeblarekService = new ApiWeblarekService();
-        // this._apiResponseCreateOrder = new ModalContacts;
         this._productsStore = new ProductsStore(this._events);
         this._modalProduct = new ModalProduct(this._events, '#card-preview');
         this._basketStore = new BasketStore(this._events, this._productsStore);
@@ -38,7 +37,7 @@ export class AppController {
         this._basketItemComponent = new BasketItemComponent(this._events, '#card-basket');
         this._modalBasket = new ModalBasket(this._events, '#basket', this._basketStore, this._basketItemComponent);
         this._modalOrder = new ModalOrder(this._events, '#order', this._orderStore);
-        this._modalContacts = new ModalContacts(this._events, '#contacts', this._orderStore, this._apiWeblarekService);
+        this._modalContacts = new ModalContacts(this._events, '#contacts', this._orderStore, this._apiWeblarekService, this._basketStore);
         this._modalSuccess = new ModalSucсess(this._events, '#success');
     }
 
@@ -53,6 +52,9 @@ export class AppController {
     private _loadProducts(): void {
         this._apiWeblarekService.getProductList().then(({ items }) => {
             this._productsStore.setAll(items);
+        })
+        .catch(() => {
+            console.error('Произошла ошибка при загрузке продуктов');
         });
     }
 

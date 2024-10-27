@@ -1,4 +1,4 @@
-import { IProduct, ModalBasketNodes } from '../types';
+import { IBasketItemSpecialNode, IProduct, ModalBasketNodes } from '../types';
 import { cloneTemplate, getCardPriceText } from '../utils/utils';
 import { Modal } from './base/common/modal';
 import { EventEmitter } from './base/events';
@@ -11,6 +11,7 @@ export class ModalBasket extends Modal {
 	private _nodes: ModalBasketNodes;
 	private _basketStore: BasketStore;
 	private _basketItemComponent: BasketItemComponent;
+	private _basketItems: IBasketItemSpecialNode[] = [];
 
 	constructor(
 		events: EventEmitter,
@@ -40,11 +41,14 @@ export class ModalBasket extends Modal {
 			modalBasketPrice: modalBasket.querySelector('.basket__price'),
 		};
 
-		const basketItems = this._basketStore.getAll();
+		const basketStoreItems = this._basketStore.getAll();
         const basketListNode = modalBasket.querySelector('.basket__list');
-		const basketItemNodes = basketItems.map((product, i) => 
+		const basketItems = basketStoreItems.map((product, i) => 
 			this._basketItemComponent.createHTMLElement(product, i, this._deleteCallbackBasketItem)
 		);
+		const basketItemNodes = basketItems.map(basketItem => basketItem.node);
+
+		this._basketItems = basketItems;
 
 		basketListNode.append(...basketItemNodes);
 
@@ -54,13 +58,20 @@ export class ModalBasket extends Modal {
 
 		this._calcBasketInfo();
 
-
 		return this._nodes.modalBasket;
 	}
 
-	private _deleteCallbackBasketItem = (product: IProduct) => {
+	private _deleteCallbackBasketItem = (product: IProduct, iDelete: number) => {
 		this._calcBasketInfo();
+		this._basketItems.splice(iDelete, 1);
+		this._reRenderBasketItemsIndex();
 	};
+
+	private _reRenderBasketItemsIndex(): void {
+		for (let i = 0; i < this._basketItems.length; i++) {
+			this._basketItems[i].reRenderIndex(i);
+		}
+	}
 
 	private _calcBasketInfo = () => {
 		this._nodes.modalBasketPrice.textContent = `${this._basketStore.calcSum()} синапсов`;

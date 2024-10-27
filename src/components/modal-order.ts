@@ -23,6 +23,7 @@ export class ModalOrder extends Modal {
 	}
 
 	public open(): void {
+		this._paymentMethod = null;
 		const content = this._createHTMLElement();
 		this._render(content);
 		super._open();

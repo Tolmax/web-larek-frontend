@@ -40,7 +40,3 @@ export class Api {
         }).then(this.handleResponse<T>);
     }
 }
-
-// const getCards = new Api("https://larek-api.nomoreparties.co");
-// const cards = getCards.get('/api/weblarek/product').then(res => res)
-// console.log(cards);

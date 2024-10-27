@@ -36,7 +36,7 @@ export class ModalProduct extends Modal {
 
         const category = getCategoryClass(product.category);
 		
-		this._nodes.modalProductCategory.classList.remove('card__category_soft');
+		this._nodes.modalProductCategory.classList.remove('card__category_other');
 		this._nodes.modalProductCategory.classList.add(`card__category_${category}`);
         this._nodes.modalProductCategory.textContent = product.category;
 
@@ -46,6 +46,7 @@ export class ModalProduct extends Modal {
         this._nodes.modalProductDescription.textContent = product.description;
         this._nodes.modalProductPrice.textContent = getCardPriceText(product.price);
         this._nodes.modalProductTitle.textContent = product.title;
+        this._nodes.modalProductButton.disabled = product.price === null
 
         this._nodes.modalProductButton.addEventListener('click', () => {
             this._events.emit('basket:add', { productId: product.id });

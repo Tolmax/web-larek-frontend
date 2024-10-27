@@ -14,11 +14,15 @@ export class BasketStore {
 
     public add(productId: string): void {
         this._basket.add(productId);
-        this._events.emit('basket:changed', this.getAll());
+        this._changeBasket();
     }
 
     public delete(productId: string) {
         this._basket.delete(productId);
+        this._changeBasket();
+    }
+
+    private _changeBasket() {
         this._events.emit('basket:changed', this.getAll());
     }
 
@@ -40,5 +44,10 @@ export class BasketStore {
             acc = acc + price;
             return acc;
         }, 0);
+    }
+
+    public clear(): void {
+        this._basket.clear();
+        this._changeBasket();
     }
 }

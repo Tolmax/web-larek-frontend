@@ -36,6 +36,7 @@ export class Modal {
 	protected _close = (): void => {
 		this._modalNodes.modal.classList.remove('modal_active');
 		document.removeEventListener('keyup', this._handleEscUp);
+		this._callbackClose();
 	};
 
 	private _handleEscUp = (evt: KeyboardEvent): void => {
@@ -43,4 +44,8 @@ export class Modal {
 			this._close();
 		}
 	};
+
+	protected _callbackClose(): void {
+		
+	}
 }

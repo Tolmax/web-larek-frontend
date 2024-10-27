@@ -13,7 +13,7 @@ export class Component<T = object> {
     /**
      * Абстрактный метод для создания DOM-элемента. Дочерние классы должны будут его реализовать
      */
-    protected createHTMLElement(data: T, ...args: any[]): HTMLElement {
+    protected createHTMLElement(data: T, ...args: any[]): any {
         throw new Error('Метод createHTMLElement должен быть реализован подклассом');
     }
 }

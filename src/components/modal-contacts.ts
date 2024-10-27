@@ -3,6 +3,7 @@ import { cloneTemplate } from '../utils/utils';
 import { ApiWeblarekService } from './api-weblarek.service';
 import { Modal } from './base/common/modal';
 import { EventEmitter } from './base/events';
+import { BasketStore } from './basket.store';
 import { OrderStore } from './order.store';
 
 export class ModalContacts extends Modal {
@@ -10,19 +11,22 @@ export class ModalContacts extends Modal {
 	private _events: EventEmitter;
 	private _nodes: ModalContactsNodes;
 	private _orderStore: OrderStore;
-    private _apiWeblarekService: ApiWeblarekService
+	private _apiWeblarekService: ApiWeblarekService;
+	private _basketStore: BasketStore;
 
 	constructor(
 		events: EventEmitter,
 		templateSelector: string,
 		orderStore: OrderStore,
-        apiWeblarekService: ApiWeblarekService
+		apiWeblarekService: ApiWeblarekService,
+		basketStore: BasketStore,
 	) {
 		super();
 		this._templateSelector = templateSelector;
 		this._events = events;
 		this._orderStore = orderStore;
-        this._apiWeblarekService = apiWeblarekService;
+		this._apiWeblarekService = apiWeblarekService;
+		this._basketStore = basketStore;
 	}
 
 	public open(): void {
@@ -43,21 +47,26 @@ export class ModalContacts extends Modal {
 			modalContactsSubmitButton: modalContacts.querySelector('[type=submit]'),
 		};
 
-		this._nodes.modalContactsEmailInput.addEventListener('input', () => this._validate());
-		this._nodes.modalContactsPhoneInput.addEventListener('input', () => this._validate());
+		this._nodes.modalContactsEmailInput.addEventListener('input', () =>
+			this._validate()
+		);
+		this._nodes.modalContactsPhoneInput.addEventListener('input', () =>
+			this._validate()
+		);
 
 		this._nodes.modalContactsSubmitButton.addEventListener('click', (event) => {
 			event.preventDefault();
 			this._orderStore.setEmail(this._nodes.modalContactsEmailInput.value);
 			this._orderStore.setPhone(this._nodes.modalContactsPhoneInput.value);
-            this._apiWeblarekService.sendOrder(this._orderStore.getOrder())
-                .then((order) => {
-                    this._events.emit('contacts:submit', order);
-					console.log(order);					
-                })
-                .catch(() => {
-                    alert('Произошла ошибка при отправке заказа');
-                });
+			this._apiWeblarekService
+				.sendOrder(this._orderStore.getOrder())
+				.then((order) => {
+					this._basketStore.clear();
+					this._events.emit('contacts:submit', order);
+				})
+				.catch(() => {
+					alert('Произошла ошибка при отправке заказа');
+				});
 		});
 
 		return this._nodes.modalContacts;
@@ -65,7 +74,8 @@ export class ModalContacts extends Modal {
 
 	private _validate(): void {
 		const valid =
-			this._nodes.modalContactsEmailInput.value !== '' && this._nodes.modalContactsPhoneInput.value !== '';
+			this._nodes.modalContactsEmailInput.value !== '' &&
+			this._nodes.modalContactsPhoneInput.value !== '';
 
 		this._renderErrorValidationText();
 		this._nodes.modalContactsSubmitButton.disabled = !valid;
@@ -77,7 +87,8 @@ export class ModalContacts extends Modal {
 		const emailAndPhoneErrorText = `${emailErrorText}<br>${phoneErrorText}`;
 
 		if (
-			this._nodes.modalContactsEmailInput.value === '' && this._nodes.modalContactsPhoneInput.value === ''
+			this._nodes.modalContactsEmailInput.value === '' &&
+			this._nodes.modalContactsPhoneInput.value === ''
 		) {
 			this._nodes.modalContactsErrors.innerHTML = emailAndPhoneErrorText;
 		} else if (this._nodes.modalContactsEmailInput.value === '') {
